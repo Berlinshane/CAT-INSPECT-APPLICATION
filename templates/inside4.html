@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Survey Lancer</title>
+    <meta charset="UTF-8">
+    <!--<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>-->
+    
+    <link rel="icon" type="image/x-icon" href="C:\Users\Berlin Kirubha\OneDrive\Desktop\PROJX\img\favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/superslides.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.10.2/css/all.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    
+    
+    
+    
+        <!-- Navbar -->
+        <nav id="navigation" class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="#">Survey Lancer</a>
+      
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+      
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#about"
+                    >About Me <span class="sr-only"></span
+                  ></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#skills">Aspects</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#stats">Survey</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#contact">Contact</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          
+      
+          <div class="titleMessage3">
+            <div class="th">
+            <div class="heading">
+              <p class="main1">Who conducts the Hackathon?</p><!--<p class="sub typed"></p>-->
+              <div><button id="startButton" class="contactButton2" onclick="translateAndSpeak()">Speak</button></div>
+              <p class="main2"><br>1:Survey Junkie &emsp;  &emsp;
+                2:Survey Monkey<br>  &nbsp;&nbsp;3:Survey Sparrow &nbsp;&nbsp;&nbsp;4:Life Points
+              </p>
+             
+              
+                
+                  <!--<input type="text" id="input-text">-->
+                  
+                
+                <script>
+                  async function translateAndSpeak() {
+                // Retrieve the transcript from the local storage
+                   const transcript = localStorage.getItem("transcript");
+                    const text = "Who conducts the Hackathon?:\n:1:Survey Junkie:\n2:Survey Munkie:\n3:SurveySparrow:\n4:LifePoints";
+                    const lang1="Tamil.";
+                    const languages=[];
+                    switch(transcript)
+                    {
+                    case 'Korean.':
+                       languages[0] = 'ko';
+                        break;
+                    case 'Tamil.':
+                        languages[0] = 'ta';
+                        break;
+                case 'Malayalam.':
+                  languages[0] = 'ml';
+                  break;
+                case 'French.':
+                  languages[0] = 'fr';
+                  break;
+                case 'Albanian.':
+                  languages[0] = 'sq';
+                  break;
+                case 'Arabic.':
+                  languages[0] = 'ar';
+                  break;
+                case 'Armenian.':
+                  languages[0] = 'hy';
+                  break;
+                case 'Bulgarian.':
+                  languages[0] = 'bg';
+                  break;
+                case 'Chinese.':
+                  languages[0] = 'zh-cn';
+                  break;
+                case 'Danish.':
+                  languages[0] = 'da';
+                  break;
+                case 'Dutch.':
+                  languages[0] = 'nl';
+                  break;
+                case 'English.':
+                  languages[0] = 'en';
+                  break;
+                case 'Filipino.':
+                  languages[0] = 'tl';
+                  break;
+                case 'Georgian.':
+                  languages[0] = 'ka';
+                  break;
+                case 'German.':
+                  languages[0] = 'de';
+                  break;
+                case 'Greek.':
+                  languages[0] = 'el';
+                  break;
+                case 'Hebrew.':
+                  languages[0] = 'he';
+                  break;
+                case 'Gujarati.':
+                  languages[0] = 'gu';
+                  break;
+                case 'Hindi.':
+                  languages[0] = 'hi';
+                  break;
+                case 'Indonesian.':
+                  languages[0] = 'id';
+                    break;
+                case 'Japanese.':
+                  languages[0] = 'ja';
+                  break;
+                case 'Kannada.':
+                  languages[0] = 'kn';
+                  break;
+                case 'Latin.':
+                  languages[0] = 'la';
+                  break;
+                  case 'Marathi.':
+                  languages[0] = 'mr';
+                  break;
+                case 'Myanmar.':
+                  languages[0] = 'my';
+                  break;
+                case 'Nepali.':
+                  languages[0] = 'ne';
+                  break;
+                case 'Persian.':
+                  languages[0] = 'fa';
+                  break;
+                case 'Portuguese.':
+                  languages[0] = 'pt';
+                  break;
+                case 'Punjabi.':
+                  languages[0] = 'pa';
+                  break;
+                case 'Russian.':
+                  languages[0] = 'ru';
+                  break;
+                case 'Spanish.':
+                  languages[0] = 'es';
+                  break;
+                case 'Swedish.':
+                  languages[0] = 'sv';
+                    break;
+                case 'Telugu.':
+                  languages[0] = 'te';
+                  break;
+                case 'Thai.':
+                  languages[0] = 'th';
+                  break;
+                case 'Urdu.':
+                  languages[0] = 'ur';
+                  break;
+                case 'Zulu.':
+                  languages[0] = 'zu';
+                  break;
+                   default:
+                        languages[0] = 'en';
+                        break;
+                    }
+                    const translatedTexts = await Promise.all(
+                      languages.map(async (lang) => {
+                        const response = await fetch(
+                          `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${text}`
+                        );
+                        const data = await response.json();
+                        return data[0][0][0];
+                      })
+                    );
+                    const utterances = translatedTexts.map((text, index) => {
+                      const utterance = new SpeechSynthesisUtterance(text);
+                      utterance.lang = languages[index];
+                      return utterance;
+                    });
+                    speechSynthesis.cancel();
+                    utterances.forEach((utterance) => {
+                      speechSynthesis.speak(utterance);
+                    });
+                  }
+                </script>
+             
+                <div id="translations"></div>
+                <div class="container1">
+                  <div class="grid-1 callout primary">
+                  <button class="button-24" role="button">1</button><br><br>
+                  <button class="button-24" role="button">3</button>
+                  </div>
+                
+                  <div class="grid-2 callout warning">
+                    <button class="button-24" role="button">2</button><br><br>
+                    <button class="button-24" role="button">4</button>
+                  </div>
+                
+                  
+                
+                </div>
+               
+                <script>
+                  const transcript = localStorage.getItem("transcript");
+                  const originalText = 'Who conducts the Hackathon?:<br>1:Survey Junkie<br>2:Survey Monkey<br>3:Survey Sparrow<br>4:Life Points';
+                  const translationsElement = document.getElementById('translations');
+                  //const languages = ['ta']; // Add or remove language codes as needed
+                  switch(transcript)
+                    {
+                    
+                    case 'Korean.':
+                        languages=['ko'];
+                        break;
+                    case 'Tamil.':
+                    languages=['ta'];
+                        break;
+                case 'Malayalam.':
+                    languages=['ml'];
+                  break;
+                case 'French.':
+                    languages=['fr'];
+                  break;
+                        case 'Albanian.':
+                  languages=['sq'];
+                  break;
+                case 'Arabic.':
+                  languages=['ar'];
+                  break;
+                case 'Armenian.':
+                  languages =['hy'];
+                  break;
+                case 'Bulgarian.':
+                  languages=['bg'];
+                  break;
+                case 'Chinese.':
+                  languages=['zh-cn'];
+                  break;
+                case 'Danish.':
+                  languages=['da'];
+                  break;
+                case 'Dutch.':
+                  languages=['nl'];
+                  break;
+                case 'English.':
+                  languages=['en'];
+                  break;
+                case 'Filipino.':
+                  languages=['tl'];
+                  break;
+                case 'Georgian.':
+                  languages=['ka'];
+                  break;
+                case 'German.':
+                  languages=['de'];
+                  break;
+                case 'Greek.':
+                  languages=['el'];
+                  break;
+                case 'Hebrew.':
+                  languages=['he'];
+                  break;
+                case 'Gujarati.':
+                  languages=['gu'];
+                  break;
+                case 'Hindi.':
+                  languages=['hi'];
+                  break;
+                case 'Indonesian.':
+                  languages=['id'];
+                    break;
+                case 'Japanese.':
+                  languages=['ja'];
+                  break;
+                case 'Kannada.':
+                  languages=['kn'];
+                  break;
+                case 'Latin.':
+                  languages=['la'];
+                  break;
+                  case 'Marathi.':
+                  languages=['mr'];
+                  break;
+                case 'Myanmar.':
+                  languages=['my'];
+                  break;
+                case 'Nepali.':
+                  languages=['ne'];
+                  break;
+                case 'Persian.':
+                  languages=['fa'];
+                  break;
+                case 'Portuguese.':
+                  languages=['pt'];
+                  break;
+                case 'Punjabi.':
+                  languages=['pa'];
+                  break;
+                case 'Russian.':
+                  languages=['ru'];
+                  break;
+                case 'Spanish.':
+                  languages=['es'];
+                  break;
+                case 'Swedish.':
+                  languages =['sv'];
+                    break;
+                case 'Telugu.':
+                  languages=['te'];
+                  break;
+                case 'Thai.':
+                  languages=['th'];
+                  break;
+                case 'Urdu.':
+                  languages=['ur'];
+                  break;
+                case 'Zulu.':
+                  languages=['zu'];
+                  break;
+                    default:
+                    languages=['en'];
+                        break;
+                    }
+                  languages.forEach((language) => {
+                    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${language}&dt=t&q=${encodeURIComponent(originalText)}`;
+                    
+                    fetch(url)
+                      .then(response => response.json())
+                      .then(data => {
+                        const translation = data[0][0][0];
+                        const translatedText = `<p>${translation}</p>`;
+                        translationsElement.innerHTML += translatedText;
+                      })
+                      .catch(error => console.error(error));
+                  });
+                </script>
+            
+              </div>
+                
+            <div>
+              <a href="inside5.html" class="contactButton2">NEXT ></a>
+            </div></div>
+        </div>
+          </div>
+
+    <div id="slides">
+      <div class="overlay"></div>
+      <div class="slides-container">
+        <img src="img/bg1.png" alt="" />
+        <img src="img/bg1.png" alt="" />
+      </div>
+      
+      
+    </div>
+
+    <!--<script>
+        function record()
+        {
+            var recognition=new webkitSpeechRecognition();
+            recognition.lang="en-GB";
+            recognition.onresult=function(event)
+            {
+                console.log(event);
+            }
+            recognition.start();
+        }
+    </script>-->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.8.2/countUp.min.js"></script>
+    <script src="js/countUp-jquery.js"></script>
+    <script src="js/jquery.superslides.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.easypiechart.min.js"></script>
+    <script src="js/typed.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/isotope-layout@3.0.6/dist/isotope.pkgd.min.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script src="js/script.js"></script>
+    
+    
+    </body>
+</html>

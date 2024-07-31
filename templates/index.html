@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Inspection Voice and Text Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .form-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], textarea, button {
+            width: calc(100% - 24px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #48aaad;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #voice-inputs {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        #voice-inputs p {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        async function fetchVoiceInputs() {
+            try {
+                const response = await fetch('/get_voice_inputs');
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    const voiceInputs = data.data;
+                    const recommendations = data.recommendations;
+
+                    let voiceInputsHtml = '';
+                    voiceInputs.forEach(input => {
+                        voiceInputsHtml += `<div>
+                            <p>ID: ${input.id}</p>
+                            <p>Rust/Dents/Damage: ${input.rust_dents_damage}</p>
+                            <p>Engine Oil Condition: ${input.engine_oil_condition}</p>
+                            <p>Engine Oil Color: ${input.engine_oil_color}</p>
+                            <p>Brake Fluid Condition: ${input.brake_fluid_condition}</p>
+                            <p>Brake Fluid Color: ${input.brake_fluid_color}</p>
+                            <p>Oil Leak: ${input.oil_leak}</p>
+                        </div>`;
+                    });
+
+                    let recommendationsHtml = '';
+                    recommendations.forEach(recommendation => {
+                        recommendationsHtml += `<div id="recommendation-${recommendation.id}">
+                            <p>ID: ${recommendation.id}</p>
+                            <p class="originalText">${recommendation.recommendation}</p>
+                            <p class="translatedText"></p>
+                            <button onclick="translateParagraph(${recommendation.id})">Translate</button>
+                            <button onclick="addToPDF(${recommendation.id})">Generate PDF</button>
+                            <div class="notes-section hidden">
+                        <p>Notes:</p>
+                        <textarea class="notes-textarea">${recommendation.notes}</textarea>
+                        <p>Attach Images:</p>
+                        <input type="file" class="image-upload" multiple>
+                    </div>
+                        </div>`;
+                    });
+
+                    document.getElementById('voice-inputs').innerHTML = voiceInputsHtml;
+                    document.getElementById('recommendations').innerHTML = recommendationsHtml;
+                } else {
+                    console.error('Failed to fetch voice inputs:', data.message);
+                }
+            } catch (error) {
+                console.error('Error fetching voice inputs:', error.message);
+            }
+        }
+
+        async function submitSurvey() {
+            try {
+                const response = await fetch('/save_voice_input', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        rust_dents_damage: document.getElementById('rust_dents_damage_textbox').value,
+                        engine_oil_condition: document.getElementById('engine_oil_condition_textbox').value,
+                        engine_oil_color: document.getElementById('engine_oil_color_textbox').value,
+                        brake_fluid_condition: document.getElementById('brake_fluid_condition_textbox').value,
+                        brake_fluid_color: document.getElementById('brake_fluid_color_textbox').value,
+                        oil_leak: document.getElementById('oil_leak_textbox').value,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    alert('Survey response saved successfully!');
+                } else {
+                    alert('Failed to save survey response.');
+                }
+            } catch (error) {
+                console.error('Error saving survey response:', error.message);
+                alert('Failed to save survey response.');
+            }
+        }
+
+        async function translateParagraph(id) {
+            const originalTextElement = document.querySelector(`#recommendation-${id} .originalText`);
+            const translatedTextElement = document.querySelector(`#recommendation-${id} .translatedText`);
+
+            const text = originalTextElement.innerText;
+            const maxLength = 400; // Limit to avoid API length issues
+            const textChunks = text.match(new RegExp('.{1,' + maxLength + '}', 'g'));
+
+            let translatedText = '';
+
+            for (const chunk of textChunks) {
+                try {
+                    const response = await fetch('/translate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ text: chunk })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                    translatedText += data.translatedText || '';
+                } catch (error) {
+                    console.error('Error during translation:', error);
+                    translatedText += ' [Translation failed for this part.]';
+                }
+            }
+
+            translatedTextElement.innerText = translatedText.trim(); // Trim to remove any extra whitespace
+        }
+
+        function addToPDF(id) {
+            const originalText = document.querySelector(`#recommendation-${id} .originalText`).innerText;
+            const translatedText = document.querySelector(`#recommendation-${id} .translatedText`).innerText;
+            const voiceInputsHtml = document.getElementById('voice-inputs').innerText;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text(`Original Recommendation:\n${originalText}\n\nRecommendation:\n${voiceInputsHtml}`, 10, 10);
+            doc.save('recommendation.pdf');
+        }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Vehicle Inspection Voice and Text Input</h1>
+        <div class="form-section">
+            <button onclick="location.href='{{ url_for('add_vehicle') }}'">Add Vehicle Details</button>
+            <label>Rust, Dents or Damage in Engine (Y/N):</label>
+            <button onclick="startDictation('rust_dents_damage')">Start Dictation</button>
+            <button onclick="location.href='{{ url_for('add_image') }}'">Add Image</button>
+            <input type="text" id="rust_dents_damage_textbox" placeholder="Enter text">
+            <p id="rust_dents_damage"></p>
+            <div id="rust_dents_damage_notes" class="hidden">
+                <p>Explain in Notes:</p>
+                <textarea id="rust_dents_damage_explanation"></textarea>
+                <p>Attach Images:</p>
+                <input type="file" id="rust_dents_damage_images" multiple>
+            </div>
+        </div>
+        <div class="form-section">
+            <label>Engine Oil Condition:</label>
+            <button onclick="startDictation('engine_oil_condition')">Start Dictation</button>
+            <input type="text" id="engine_oil_condition_textbox" placeholder="Enter text">
+            <p id="engine_oil_condition"></p>
+        </div>
+        <div class="form-section">
+            <label>Engine Oil Color:</label>
+            <button onclick="startDictation('engine_oil_color')">Start Dictation</button>
+            <input type="text" id="engine_oil_color_textbox" placeholder="Enter text">
+            <p id="engine_oil_color"></p>
+        </div>
+        <div class="form-section">
+            <label>Brake Fluid Condition:</label>
+            <button onclick="startDictation('brake_fluid_condition')">Start Dictation</button>
+            <input type="text" id="brake_fluid_condition_textbox" placeholder="Enter text">
+            <p id="brake_fluid_condition"></p>
+        </div>
+        <div class="form-section">
+            <label>Brake Fluid Color:</label>
+            <button onclick="startDictation('brake_fluid_color')">Start Dictation</button>
+            <input type="text" id="brake_fluid_color_textbox" placeholder="Enter text">
+            <p id="brake_fluid_color"></p>
+        </div>
+        <div class="form-section">
+            <label>Any oil leak in Engine:</label>
+            <button onclick="startDictation('oil_leak')">Start Dictation</button>
+            <input type="text" id="oil_leak_textbox" placeholder="Enter text">
+            <p id="oil_leak"></p>
+        </div>
+        <button onclick="fetchVoiceInputs()">Fetch Voice Inputs</button>
+        <button onclick="submitSurvey()">Submit Survey</button>
+        <div id="voice-inputs"></div>
+        <div id="recommendations"></div>
+    </div>
+</body>
+</html>

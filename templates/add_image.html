@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #ffffff;
+            max-width: 400px;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="file"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .preview {
+            margin-left: 20px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px; /* Set the width for medium size */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+            background-color: #45a049;   
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <h2>Image Upload</h2>
+            <label for="file">Upload Image:</label>
+            <input type="file" id="file" name="file" accept="image/*" required>
+            <input type="submit" value="Upload">
+        </form>
+        <div class="preview" id="preview">
+            <h2>Uploaded Image</h2>
+            {% if filename %}
+            <img src="{{ url_for('send_image', filename=filename) }}" alt="Uploaded Image">
+            {% endif %}
+        </div>
+        <button onclick="location.href='{{ url_for('index') }}'">Click to Proceed Next</button>
+    </center>
+</body>
+</html>

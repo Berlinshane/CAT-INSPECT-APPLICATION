@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Inspection Management</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #reader {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            margin: 20px auto;
+        }
+
+        form {
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        input {
+            padding: 8px;
+            font-size: 1em;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="reader"></div>
+    <form id="vehicle-form" action="{{ url_for('submit') }}" method="POST">
+        <label for="vehicle-id">Vehicle ID:</label>
+        <input type="text" id="vehicle-id" name="vehicle-id" readonly>
+        
+        <label for="vehicle-make">Make:</label>
+        <input type="text" id="vehicle-make" name="vehicle-make" readonly>
+        
+        <label for="vehicle-model">Model:</label>
+        <input type="text" id="vehicle-model" name="vehicle-model" readonly>
+        
+        <label for="vehicle-year">Year:</label>
+        <input type="text" id="vehicle-year" name="vehicle-year" readonly>
+        
+        <label for="vehicle-color">Color:</label>
+        <input type="text" id="vehicle-color" name="vehicle-color" readonly>
+        
+        <button type="submit">Submit</button>
+    </form>
+    <a href="{{ url_for('view') }}">
+        <button>View Stored Data</button>
+    </a>
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Scan successful: ${decodedText}`);
+            try {
+                const vehicleDetails = JSON.parse(decodedText);
+                document.getElementById('vehicle-id').value = vehicleDetails.id;
+                document.getElementById('vehicle-make').value = vehicleDetails.make;
+                document.getElementById('vehicle-model').value = vehicleDetails.model;
+                document.getElementById('vehicle-year').value = vehicleDetails.year;
+                document.getElementById('vehicle-color').value = vehicleDetails.color;
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        }
+
+        function onScanFailure(error) {
+            console.warn(`Code scan error: ${error}`);
+        }
+
+        window.addEventListener('load', (event) => {
+            try {
+                console.log('Initializing QR Code Scanner');
+                let html5QrcodeScanner = new Html5QrcodeScanner(
+                    "reader", 
+                    { 
+                        fps: 10, 
+                        qrbox: { width: 250, height: 250 },
+                        videoConstraints: { facingMode: "user" }  // Use front-facing camera
+                    }
+                );
+
+                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            } catch (error) {
+                console.error('Error initializing QR Code Scanner:', error);
+            }
+        });
+    </script>
+</body>
+</html>
